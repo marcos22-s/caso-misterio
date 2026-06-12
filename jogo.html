@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Secreto: Casos Criminais Avançados 🕵️‍♂️🕵️‍♀️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f0f12;
+            background-image: radial-gradient(circle, #1d1d24 10%, transparent 11%);
+            background-size: 15px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d1d1d6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .investigation-box {
+            background: #141419;
+            border: 2px solid #2a2a33;
+            border-top: 6px solid #ff2a6d;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -14px;
+            right: 20px;
+            background: #ff2a6d;
+            color: #0f0f12;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 2px;
+            letter-spacing: 2px;
+        }
+
+        h1, h2 {
+            color: #05d9e8;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .story-text {
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            text-align: justify;
+            background: #0f0f12;
+            padding: 20px;
+            border-left: 3px solid #ff2a6d;
+            border-radius: 2px;
+            white-space: pre-line; /* Mantém quebras de linha dos enigmas */
+        }
+
+        .clue-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: #0f0f12;
+            border: 1px solid #2a2a33;
+            padding: 15px;
+            color: #fff;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #05d9e8;
+            background: #141419;
+        }
+
+        button {
+            background: #ff2a6d;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #05d9e8;
+            color: #0f0f12;
+        }
+
+        .error-msg {
+            color: #f04747;
+            font-size: 0.9rem;
+            font-weight: bold;
+            min-height: 25px;
+            margin-top: 5px;
+        }
+
+        .success {
+            border-top-color: #05d9e8;
+            text-align: center;
+        }
+
+        .success h2 {
+            color: #05d9e8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="intro-screen" class="screen active">
+        <div class="investigation-box">
+            <span class="badge">NÍVEL ALTO</span>
+            <h1>Dossiê Criminal: Caixa Preta</h1>
+            <p class="story-text">
+                Atenção, investigadores. Vocês acabaram de ter acesso aos arquivos encriptados da Divisão de Inteligência. 
+                Não há pistas óbvias aqui. Cada caso exige raciocínio dedutivo, matemática, decodificação e análise fria. 
+                Se um palpite estiver errado, a investigação volta à estaca zero. 
+                
+                Recomendamos o uso de papel, caneta e trabalho em equipe. Boa sorte.
+            </p>
+            <button onclick="startGame()">Abrir Arquivo 📂</button>
+        </div>
+    </section>
+
+    <section id="game-screen" class="screen">
+        <div class="investigation-box">
+            <span class="badge" id="case-number">CASO nº 001</span>
+            <h2 id="case-title">Título do Caso</h2>
+            
+            <p class="story-text" id="case-description">Carregando dados...</p>
+            
+            <div class="clue-box">
+                <input type="text" id="user-answer" placeholder="Digite o código de desbloqueio...">
+                <button onclick="checkAnswer()">Submeter</button>
+            </div>
+            <p id="error-msg" class="error-msg"></p>
+        </div>
+    </section>
+
+    <section id="end-screen" class="screen">
+        <div class="investigation-box success">
+            <span class="badge" style="background: #05d9e8; color: #0f0f12;">CONCLUÍDO</span>
+            <h2>NÍVEL SUPERADO! 🧠🏆</h2>
+            <p class="story-text">
+                Impressionante. Vocês decifraram os enigmas mais complexos da agência e provaram que possuem uma mente analítica brilhante funcionando em perfeita sintonia. 
+                
+                O sistema foi totalmente limpo e o culpado foi localizado graças às suas deduções precisas. Vocês formam uma dupla imbatível contra o crime.
+            </p>
+            <p style="font-weight: bold; color: #05d9e8;">Fim do Dossiê Avançado. Até o próximo caso.</p>
+        </div>
+    </section>
+
+    <script>
+        // BANCO DE DADOS DOS CASOS CRIMINAIS DE LOGICA AVANÇADA
+        const casos = [
+            {
+                num: "001",
+                titulo: "Caso 1: O Enigma da Cifra de César 🔏",
+                descricao: "EVIDÊNCIA: Um hacker interceptou as coordenadas de uma fuga. A mensagem original foi encriptada usando uma antiga Cifra de César com deslocamento de 3 posições para a direita (onde A vira D, B vira E...). \n\nA sequência codificada encontrada no servidor foi:\n'KHOY'\n\nQual é a palavra real que revela o local onde o suspeito está escondido? (Digite a palavra decifrada em minúsculo)",
+                respostaCerta: "help" // K(-3)=H, H(-3)=E, O(-3)=L, Y(-3)=P
+            },
+            {
+                num: "002",
+                titulo: "Caso 2: O Sequestro do Matemático 🔢",
+                descricao: "EVIDÊNCIA: Professor Charles foi levado de seu laboratório. Ele conseguiu deixar um bilhete com uma sequência numérica lógica antes de ser rendido. A polícia sabe que o último número da sequência é o código do andar do prédio onde ele está mantido refém.\n\nAnalise o padrão da sequência:\n2, 3, 5, 9, 17, 33, ...\n\nQual é o próximo número que completa o padrão e revela o cativeiro?",
+                respostaCerta: "65" // Padrão: (Anterior * 2) - 1. Ex: (33 * 2) - 1 = 65
+            },
+            {
+                num: "003",
+                titulo: "Caso 3: O Paradoxo dos Três Suspeitos ⚖️",
+                descricao: "EVIDÊNCIA: O detetive interrogou três suspeitos de um roubo a banco: Logan, Miles e Nathan. Ele sabe que APENAS UM deles está mentindo e que o culpado é quem mentiu. Veja os depoimentos:\n\n- Logan diz: 'Miles não é o culpado.'\n- Miles diz: 'Nathan é o culpado.'\n- Nathan diz: 'Eu não sou o culpado.'\n\nQuem é o criminoso que mentiu no interrogatório?",
+                respostaCerta: "miles" // Se Miles diz a verdade, Nathan mente (2 verdades/1 mentira não bate). Se Miles mente, Logan diz a verdade e Nathan diz a verdade (Apenas 1 mentiroso). Logo, Miles é o culpado.
+            },
+            {
+                num: "004",
+                titulo: "Caso 4: A Bomba Relógio Criptografada 💣",
+                descricao: "EVIDÊNCIA: Vocês localizaram o dispositivo tecnológico, mas ele possui um desativador analógico baseado em uma charada de pesagem lógica:\n\n'Temos 9 joias valiosas em cima da mesa de evidências. Oito delas têm exatamente o mesmo peso, mas uma delas é falsa e um pouco mais leve que as outras. Usando uma balança de pratos (aquela antiga de comparação com dois lados), qual é o número MÍNIMO de pesagens necessárias para garantir, com 100% de certeza, qual é a joia falsa?'\n\nDigite apenas o número por extenso (ex: um, dois, três...).",
+                respostaCerta: "dois" // Divide em 3 grupos de 3 joias. Pesa o grupo A contra o B. Se igual, a falsa tá no C. Se desigual, tá no mais leve. Pega as 3 joias do grupo suspeito e faz a segunda pesagem (1 contra 1).
+            }
+        ];
+
+        let faseAtual = 0;
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startGame() {
+            faseAtual = 0;
+            showScreen('game-screen');
+            loadCase();
+        }
+
+        function loadCase() {
+            document.getElementById('user-answer').value = "";
+            document.getElementById('error-msg').innerText = "";
+
+            let caso = casos[faseAtual];
+
+            document.getElementById('case-number').innerText = `ARQUIVO nº ${caso.num}`;
+            document.getElementById('case-title').innerText = caso.titulo;
+            document.getElementById('case-description').innerText = caso.descricao;
+        }
+
+        function checkAnswer() {
+            let respostaUsuario = document.getElementById('user-answer').value.trim().toLowerCase();
+            let respostaCorreta = casos[faseAtual].respostaCerta.toLowerCase();
+            let erroElemento = document.getElementById('error-msg');
+
+            if (respostaUsuario === respostaCorreta) {
+                faseAtual++;
+
+                if (faseAtual < casos.length) {
+                    loadCase();
+                } else {
+                    showScreen('end-screen');
+                }
+            } else {
+                const erros = [
+                    "Análise incorreta. O raciocínio falhou em algum ponto.",
+                    "Código inválido. Essa dedução criaria um falso positivo.",
+                    "Negado. Os dados coletados contradizem essa resposta.",
+                    "Erro de cálculo detetive. Refaça a lógica no papel."
+                ];
+                erroElemento.innerText = erros[Math.floor(Math.random() * erros.length)];
+            }
+        }
+
+        document.getElementById('user-answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
